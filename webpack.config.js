@@ -8,7 +8,7 @@ module .exports = {
   output: {
     // filenameだけを指定する場合は
     // 同階層にあるdistディレクトリが出力先になる
-    filename: "./packed_src/main.js",
+    filename: "./src/main.js",
     // 個別にpathプロパティを付与すると個別に出力先ディレクトリを変更できる
     path: __dirname + "/dist"
   },

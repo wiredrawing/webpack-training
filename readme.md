@@ -25,8 +25,14 @@ npm install -D  webpack webpack-cli webpack-dev-server
 ...
 
   "scripts": {
+    // デフォルトで記述されているコマンド
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve"
+    // webpack-dev-server を起動するためのコマンドを追記
+    "start": "webpack serve",
+    // production用に作成したjavascriptをバンドルするコマンド
+    "build": "webpack --mode production",
+    // development用に作成したjavascriptをバンドルするコマンド
+    "dev": "webpack --mode development"
   },
   
 ...
@@ -53,7 +59,10 @@ module .exports = {
   // 静的ファイルのindex.htmlには scritpタグで以下で出力される main.jsを読み込む
   // ※例) <script src="main.js"></script>
   output: {
-    filename: "./dist/main.js",
+    // 以下のようにした場合は ./dist/main.js というパスに出力される
+    filename: "main.js",
+    // 以下の場合は  ./dist/src/main.js というパスに出力される
+    filename: "./src/main.js",
   },
 
   devServer: {
@@ -66,3 +75,16 @@ module .exports = {
 
 ```
 上記のような webpack設定用のjavascriptファイルを作成する
+
+
+## 5.webpack-dev-serverを使ったjavascript開発用ローカルサーバーを起動する
+
+```angular2html
+# package.jsonに記述した npmコマンドを実行する
+
+npm run start
+# npmがバッググランドで `webpack serve` を実行する
+```
+
+上記コマンドを実行すると
+http://localhost:8080 が ローカルサーバーとして起動する
