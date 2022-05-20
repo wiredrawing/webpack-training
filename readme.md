@@ -21,9 +21,10 @@ npm install -D  webpack webpack-cli webpack-dev-server
 ## 3.package.jsonのscriptを修正する
 
 **ターミナル上でコマンド npm run start で webpack-dev-serverが起動するように修正する**
-```
-...
+```package.json
 
+{
+  // sampele
   "scripts": {
     // デフォルトで記述されているコマンド
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,9 +34,9 @@ npm install -D  webpack webpack-cli webpack-dev-server
     "build": "webpack --mode production",
     // development用に作成したjavascriptをバンドルするコマンド
     "dev": "webpack --mode development"
-  },
-  
-...
+  }
+  // ....
+} 
 
 ```
 **上記のように"scripts"の箇所を修正したら保存して以下のコマンドを実行する**

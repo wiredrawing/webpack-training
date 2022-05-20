@@ -1,14 +1,19 @@
-import  {hello} from "./hello";
+import {hello} from "./hello";
 import $ from "jquery"
+import {MyClass} from "./myclass";
+
+let myClass = new MyClass();
+
+console.log(myClass);
 
 console.log("[start]index.jsの実行開始----->");
 
 console.log("jqueryをnpm経由でインストールして実行");
 console.log($);
 hello();
+
 class Test {
-  constructor()
-  {
+  constructor() {
     console.log("コンストラクタを実行");
   }
 }
