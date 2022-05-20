@@ -1,10 +1,13 @@
 import {hello} from "./hello";
 import $ from "jquery"
-import {MyClass} from "./myclass";
+import "./myclass";
+import {MyClass, SubClass, accessor} from "./myclass";
 
 let myClass = new MyClass();
+let subClass = new SubClass();
 
-console.log(myClass);
+console.log("myClass ===>", myClass);
+console.log("subClass ===>", subClass);
 
 console.log("[start]index.jsの実行開始----->");
 
@@ -32,10 +35,11 @@ window.addEventListener("load", function (e) {
 console.log("jqueryを実行");
 
 $(function () {
-  alert("npm経由のjqueryを実行");
+  // alert("npm経由のjqueryを実行");
   console.log($("#sample").html("中身を変更"));
-  alert("$(function () {})内の実行完了");
+  // alert("$(function () {})内の実行完了");
 });
 
-
+// 外部モジュールの実行
+accessor();
 console.log("index.jsの実行終了");
