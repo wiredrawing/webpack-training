@@ -43,3 +43,9 @@ $(function () {
 // 外部モジュールの実行
 accessor();
 console.log("index.jsの実行終了");
+
+window.addEventListener("load", function (e) {
+  console.log("window.addEventListener");
+  console.log("index.js");
+  console.log(e);
+});

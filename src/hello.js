@@ -1,6 +1,6 @@
 import $ from "jquery"
-export function hello()
-{
+
+export function hello() {
   console.log("hello 関数をimportして実行")
 }
 
@@ -11,7 +11,7 @@ $(function () {
   // input タグの内容を取得する
   let shopName = $("input[name='shopName']").val();
   console.log(shopName);
-  $("input[name='shopName']")[0].addEventListener("change", function(e) {
+  $("input[name='shopName']")[0].addEventListener("change", function (e) {
     console.log(e);
     $("#shop-name").html(e.target.value);
   });
@@ -21,3 +21,8 @@ $(function () {
 });
 
 
+window.addEventListener("load", function (e) {
+  console.log("window.addEventListener");
+  console.log("hello.js");
+  console.log(e);
+});
