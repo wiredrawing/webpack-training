@@ -2,13 +2,16 @@ module .exports = {
   entry: "./src/index.js",
   mode: "development",
   module: {
-    rules: [{
-      test: /\.js$/,
-      loader: "babel-loader",
-      options: {
-        presets: ["@babel/preset-env"]
+    rules: [
+      // javascriptをES5準拠にトランスパイルさせる
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env"]
+        }
       }
-    }]
+    ]
   },
   // webpackされたjavascript保存先
   // 静的ファイルのindex.htmlには scritpタグで以下で出力される main.jsを読み込む
@@ -24,10 +27,16 @@ module .exports = {
   devServer: {
     // webpack-dev-serverのルートディレクトリを指定する
     // index.htmlは以下で指定したディレクトリに配置する
-    static: "dist",
+    static: "public",
     open: true,
   },
 
   // ソースマップ
-  devtool: 'inline-cheap-module-source-map'
+  devtool: 'inline-cheap-module-source-map',
+
+  // ES5 (IE11など極めて古いブラウザ向けの指定)
+  target: [
+    "web",
+    "es5"
+  ]
 };

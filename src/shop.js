@@ -26,3 +26,10 @@ console.log(shop);
 console.log(shop.shopName);
 shop.shopName = "店舗名をオーバーライド";
 console.log(shop.shopName);
+
+
+
+
+export let noneFunction = () => {
+  console.log("無名関数をES5に変更する場合");
+};
