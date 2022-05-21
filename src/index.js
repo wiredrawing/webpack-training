@@ -2,6 +2,8 @@ import {hello} from "./hello";
 import $ from "jquery"
 import {MyClass, SubClass, accessor} from "./myclass";
 
+import {Shop} from "./shop";
+
 let myClass = new MyClass();
 let subClass = new SubClass();
 
@@ -48,3 +50,8 @@ window.addEventListener("load", function (e) {
   console.log("index.js");
   console.log(e);
 });
+
+
+console.log("=====================>");
+let shop = new Shop("1", "2", "3");
+console.log(shop)
