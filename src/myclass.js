@@ -41,3 +41,20 @@ window.addEventListener("load", function (e) {
   console.log("myclass.js");
   console.log(e);
 });
+
+
+
+export  class WebPackTrainingClass
+{
+  constructor(props) {
+    console.log(props);
+  }
+
+  aMethod() {
+    console.log("aMethod#");
+  }
+
+  bMethod() {
+    console.log("bMethod");
+  }
+}

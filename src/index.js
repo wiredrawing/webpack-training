@@ -1,6 +1,5 @@
 import {hello} from "./hello";
 import $ from "jquery"
-import "./myclass";
 import {MyClass, SubClass, accessor} from "./myclass";
 
 let myClass = new MyClass();

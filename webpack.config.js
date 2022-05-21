@@ -1,7 +1,15 @@
 module .exports = {
   entry: "./src/index.js",
   mode: "development",
-
+  module: {
+    rules: [{
+      test: /\.js$/,
+      loader: "babel-loader",
+      options: {
+        presets: ["@babel/preset-env"]
+      }
+    }]
+  },
   // webpackされたjavascript保存先
   // 静的ファイルのindex.htmlには scritpタグで以下で出力される main.jsを読み込む
   // ※例) <script src="main.js"></script>
@@ -18,5 +26,8 @@ module .exports = {
     // index.htmlは以下で指定したディレクトリに配置する
     static: "dist",
     open: true,
-  }
+  },
+
+  // ソースマップ
+  devtool: 'inline-cheap-module-source-map'
 };
