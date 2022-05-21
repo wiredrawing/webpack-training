@@ -60,3 +60,5 @@ console.log(shop)
 
 console.log("アロー関数はどのようにトランスパイルされるか?");
 noneFunction();
+
+import "./quill-test";
