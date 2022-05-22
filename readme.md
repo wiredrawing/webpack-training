@@ -35,41 +35,41 @@ npm init -y
 npm install -D  webpack webpack-cli webpack-dev-server
 ```
 
-## 3.package.jsonのscriptを修正する
 
-**ターミナル上でコマンド npm run start で webpack-dev-serverが起動するように修正する**
+## 2-1 この時点で webpack-dev-server (開発用ローカルサーバーを起動できる)
 
-```package.json
+**まずこの時点でのディレクトリ構造はおそらく以下のような状態**
 
-{
-  // sampele
-  "scripts": {
-    // デフォルトで記述されているコマンド
-    "test": "echo \"Error: no test specified\" && exit 1",
-    // webpack-dev-server を起動するためのコマンドを追記
-    "start": "webpack serve",
-    // production用に作成したjavascriptをバンドルするコマンド
-    "build": "webpack --mode production",
-    // development用に作成したjavascriptをバンドルするコマンド
-    "dev": "webpack --mode development"
-  }
-  // ....
-} 
+```sample.ini
+
+drwxr-xr-x 1 your-name 197609      0  5月 22 14:36 ./
+drwxr-xr-x 1 your-name 197609      0  5月 22 14:20 ../
+drwxr-xr-x 1 your-name 197609      0  5月 22 14:36 .git/
+-rw-r--r-- 1 your-name 197609      7  5月 22 14:36 .gitignore
+drwxr-xr-x 1 your-name 197609      0  5月 22 14:36 .idea/
+drwxr-xr-x 1 your-name 197609      0  5月 22 14:23 node_modules/
+-rw-r--r-- 1 your-name 197609    344  5月 22 14:23 package.json
+-rw-r--r-- 1 your-name 197609 101645  5月 22 14:23 package-lock.json
 
 ```
 
-**まずwebpack-dev-serverが起動するかどうかを確認する**
+**この状態で,対象ディレクトリ上で以下のコマンドを実行する**
 
 ```
-# webpack-dev-server の開発用ローカルサーバーを起動させる
+# 開発用 webpack-dev-serverを起動させる
 npx webpack serve
+```
 
-# 一切の初期設定やファイルを作成していないので以下のようなエラーになる
+**ただし本当の初期状態のままなため以下のような出力となる**
 
+```output.ini
+
+your-name@LAPTOP-2TPQCON4 MINGW64 ~/webpack-test (master)
+$ npx webpack serve
 <i> [webpack-dev-server] Project is running at:
 <i> [webpack-dev-server] Loopback: http://localhost:8080/
-<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.0.16:8080/
-<i> [webpack-dev-server] Content not from webpack is served from 'C:\Users\your-name\works\webpack-test\public' directory
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.0.19:8080/
+<i> [webpack-dev-server] Content not from webpack is served from 'C:\Users\your-name\webpack-test\public' directory
 assets by status 115 KiB [cached] 1 asset
 runtime modules 27.3 KiB 12 modules
 orphan modules 18.8 KiB [orphan] 8 modules
@@ -93,49 +93,158 @@ Set 'mode' option to 'development' or 'production' to enable defaults for each e
 You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
 
 ERROR in main
-Module not found: Error: Can't resolve './src' in 'C:\Users\your-name\works\webpack-test'
-resolve './src' in 'C:\Users\your-name\works\webpack-test'
-  using description file: C:\Users\your-name\works\webpack-test\package.json (relative path: .)
+Module not found: Error: Can't resolve './src' in 'C:\Users\your-name\webpack-test'
+resolve './src' in 'C:\Users\your-name\webpack-test'
+  using description file: C:\Users\your-name\webpack-test\package.json (relative path: .)
     Field 'browser' doesn't contain a valid alias configuration
-    using description file: C:\Users\your-name\works\webpack-test\package.json (relative path: ./src)
+    using description file: C:\Users\your-name\webpack-test\package.json (relative path: ./src)
       no extension
         Field 'browser' doesn't contain a valid alias configuration
-        C:\Users\your-name\works\webpack-test\src doesn't exist
+        C:\Users\your-name\webpack-test\src doesn't exist
       .js
         Field 'browser' doesn't contain a valid alias configuration
-        C:\Users\your-name\works\webpack-test\src.js doesn't exist
+        C:\Users\your-name\webpack-test\src.js doesn't exist
       .json
         Field 'browser' doesn't contain a valid alias configuration
-        C:\Users\your-name\works\webpack-test\src.json doesn't exist
+        C:\Users\your-name\webpack-test\src.json doesn't exist
       .wasm
         Field 'browser' doesn't contain a valid alias configuration
-        C:\Users\your-name\works\webpack-test\src.wasm doesn't exist
+        C:\Users\your-name\webpack-test\src.wasm doesn't exist
       as directory
-        C:\Users\your-name\works\webpack-test\src doesn't exist
+        C:\Users\your-name\webpack-test\src doesn't exist
 
-webpack 5.72.1 compiled with 1 error and 1 warning in 2854 ms
-
-```
-
-**上記の  npx webpack serve コマンド以外にもpackage.jsonに設定した次のコマンドでも実行できる**
-
-```
-npm run start  # => 実際は npx webpack serve コマンドを裏側で実行している
+webpack 5.72.1 compiled with 1 error and 1 warning in 2821 ms
 
 ```
 
-上記コマンドでwebpack-dev-serverによるローカルサーバーが起動すればOK
-※だたし必須ファイルが存在しないのでコンソールにエラーが出る
+とにかくエラーなく正常起動させるために必要な処理が以下コマンド
+
+```success.ini
+
+# npx webpack serve コマンドを叩いたディレクトリ上で以下コマンドを実行
+
+# webpack-dev-serverのドキュメントルートはデフォルト設定で publicディレクトリとなる
+mkdir ./public
+touch ./public/index.html
+
+# webpackによってbundleされるjavascriptのエントリーポイントは
+# src/index.js
+mkdir ./src
+touch ./src/index.js
+
+```
+
+上記の作業が終わったあと再度以下のコマンドを実行する
+
+```
+# --modeオプションをつけないと一部注意メッセージが表示される
+npx webpack serve --mode development
+
+# 正常に作業ができていれば以下のような出力になる
+
+$ npx webpack serve --mode development
+<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:8080/
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.0.19:8080/
+<i> [webpack-dev-server] Content not from webpack is served from 'C:\Users\your-name\webpack-test\public' directory
+asset main.js 240 KiB [emitted] (name: main)
+runtime modules 27.3 KiB 12 modules
+modules by path ./node_modules/ 158 KiB
+  modules by path ./node_modules/webpack-dev-server/client/ 53.4 KiB 12 modules
+  modules by path ./node_modules/webpack/hot/*.js 4.3 KiB
+    ./node_modules/webpack/hot/dev-server.js 1.59 KiB [built] [code generated]
+    ./node_modules/webpack/hot/log.js 1.34 KiB [built] [code generated]
+    + 2 modules
+  modules by path ./node_modules/html-entities/lib/*.js 81.3 KiB
+    ./node_modules/html-entities/lib/index.js 7.74 KiB [built] [code generated]
+    ./node_modules/html-entities/lib/named-references.js 72.7 KiB [built] [code generated]
+    + 2 modules
+  ./node_modules/ansi-html-community/index.js 4.16 KiB [built] [code generated]
+  ./node_modules/events/events.js 14.5 KiB [built] [code generated]
+./src/index.js 1 bytes [built] [code generated]
+webpack 5.72.1 compiled successfully in 1445 ms
+
+```
+
+
+## 3.package.jsonのscriptを修正する
+
+**上記では npx webpack serveとコマンドを実行していたが**
+**ターミナル上でコマンド npm run start で webpack-dev-serverが起動するように修正する**
+
+
+
+```package.json
+
+{
+  // sampele
+  "scripts": {
+    // デフォルトで記述されているコマンド
+    "test": "echo \"Error: no test specified\" && exit 1",
+    // webpack-dev-server を起動するためのコマンドを追記
+    "start": "webpack serve --mode development",
+    // production用に作成したjavascriptをバンドルするコマンド
+    "build": "webpack --mode production",
+    // development用に作成したjavascriptをバンドルするコマンド
+    "dev": "webpack --mode development"
+  }
+  // ....
+} 
+
+```
+
+**では上記の設定でwebpack-dev-serverが起動するかどうかを確認する**
+
+```
+# webpack-dev-server の開発用ローカルサーバーを起動させる
+npm run start (※ npx webpack serve)
+
+# コマンドを置き換えただけなので問題なく起動するはず...
+your-name@LAPTOP-2TPQCON4 MINGW64 ~/webpack-test (master)
+$ npm run start
+
+> webpack-test@1.0.0 start C:\Users\your-name\webpack-test
+> webpack serve --mode development
+
+<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:8080/
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.0.19:8080/
+<i> [webpack-dev-server] Content not from webpack is served from 'C:\Users\your-name\webpack-test\public' directory
+asset main.js 240 KiB [emitted] (name: main)
+runtime modules 27.3 KiB 12 modules
+modules by path ./node_modules/ 158 KiB
+  modules by path ./node_modules/webpack-dev-server/client/ 53.4 KiB 12 modules
+  modules by path ./node_modules/webpack/hot/*.js 4.3 KiB
+    ./node_modules/webpack/hot/dev-server.js 1.59 KiB [built] [code generated]
+    ./node_modules/webpack/hot/log.js 1.34 KiB [built] [code generated]
+    + 2 modules
+  modules by path ./node_modules/html-entities/lib/*.js 81.3 KiB
+    ./node_modules/html-entities/lib/index.js 7.74 KiB [built] [code generated]
+    ./node_modules/html-entities/lib/named-references.js 72.7 KiB [built] [code generated]
+    + 2 modules
+  ./node_modules/ansi-html-community/index.js 4.16 KiB [built] [code generated]
+  ./node_modules/events/events.js 14.5 KiB [built] [code generated]
+./src/index.js 1 bytes [built] [code generated]
+webpack 5.72.1 compiled successfully in 1075 ms
+
+```
 
 ## 4.webpackによる出力先の設定をする
-
 
 まず,これから開発作業するjavascriptを読み込みたい静的なhtml (index.html)を作成する
 デフォルトでは npx webpack serve コマンドを実行した階層上のpublicディレクトリを
 webpack-dev-server のルートディレクトリとして動作するのがデフォルトの挙動のようだ.
 
-そのためデフォルトの設定を再現すると
-以下のようになる
+そのためデフォルトの設定を再現すると 以下のようになる
+
+まず, npm init -y コマンドを実行したディレクトリ上で
+
+```
+# webpack用設定ファイルを作成する
+touch webpack.config.js
+
+```
+
 
 ```webpack.config.js
 
@@ -240,10 +349,7 @@ module .exports = {
     // index.htmlは以下で指定したディレクトリに配置する
     static: "public",
     open: true,
-  },
-
-  // ソースマップ
-  devtool: 'inline-cheap-module-source-map'
+  }
 };
 ```
 
