@@ -1,4 +1,5 @@
-module .exports = {
+
+module.exports = {
   entry: "./src/index.js",
   mode: "development",
   module: {
@@ -34,7 +35,7 @@ module .exports = {
   // ソースマップ
   devtool: 'inline-cheap-module-source-map',
 
-  // ES5 (IE11など極めて古いブラウザ向けの指定)
+  // // ES5 (IE11など極めて古いブラウザ向けの指定)
   target: [
     "web",
     "es5"
